@@ -160,6 +160,38 @@
 
   }
 
+  OAuth.prototype.recordCredentials = function( appInfo, userId, accessToken, done ){
+
+    var user = new Credentials()
+
+    var userData = {
+      'cid': appInfo.cid,
+      'userId': userId,
+      'appId': appInfo.appId.toString(),
+      'accessType': '0',
+      'token': accessToken,
+      'dateSubmitted': {
+        'timestamp': moment().unix(),
+        'iso': moment().toISOString()
+      }
+    }
+
+    user.record( userData, function ( error, result ) {
+
+      if ( error ) {
+
+        // code breaks
+
+        done( error )
+
+        return
+      }
+
+      done( null, result )
+
+    })
+
+  }
 
   OAuth.prototype.checkAccessToken = function( request, callback ) {
 
